@@ -1,0 +1,35 @@
+# Data and geodatabases
+data/
+*.gdb/
+*.gdb.zip
+*.sde
+*.lock
+
+# ArcGIS
+*.aprx.bak
+*.pyt.bak
+Index/
+scratch.gdb/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+.venv/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Secrets - never commit credentials
+.env
+*.secret
+credentials.json
+
+# OS / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/

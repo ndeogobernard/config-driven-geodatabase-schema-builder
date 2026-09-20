@@ -1,0 +1,39 @@
+name: Schema validation
+
+# Validates config/schema.yaml without arcpy - domains declared before use, domain types matching field types, relationship keys on both sides, integer subtype fields.
+#
+# The workflow also asserts arcpy is ABSENT. If arcpy ever became importable
+# here, the suite would quietly stop proving the code runs without it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pyyaml
+
+      - name: Confirm arcpy is absent
+        run: |
+          python - <<'PY'
+          import importlib.util, sys
+          if importlib.util.find_spec("arcpy") is not None:
+              sys.exit("arcpy is importable - the arcpy-free guarantee is void")
+          print("arcpy absent, as expected")
+          PY
+
+      - name: Run tests
+        run: python -m pytest tests/ -v --tb=short
